@@ -17,10 +17,11 @@ fn main() {
     let mut puzzle1 = String::new();
     let mut example2 = String::new();
     let mut puzzle2 = String::new();
+
     File::open(format!("challenge_files/examples1/day{day}.txt")).unwrap().read_to_string(&mut example1).unwrap();
-    File::open(format!("challenge_files/puzzles1/day{day}.txt")).unwrap().read_to_string(&mut puzzle1).unwrap();
-    File::open(format!("challenge_files/examples2/day{day}.txt")).unwrap().read_to_string(&mut example2).unwrap();
-    File::open(format!("challenge_files/puzzles2/day{day}.txt")).unwrap().read_to_string(&mut puzzle2).unwrap();
+    File::open(format!("challenge_files/puzzles/day{day}.txt")).unwrap().read_to_string(&mut puzzle1).unwrap();
+    File::open(format!("challenge_files/examples1/day{day}.txt")).unwrap().read_to_string(&mut example2).unwrap();
+    File::open(format!("challenge_files/puzzles/day{day}.txt")).unwrap().read_to_string(&mut puzzle2).unwrap();
 
     println!("Example 1: {}", challenge.solve_part1(&mut example1));
     println!("Part 1: {}", challenge.solve_part1(&mut puzzle1));

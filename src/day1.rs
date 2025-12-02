@@ -1,7 +1,7 @@
 pub struct Day1;
 
 impl super::Challenge for Day1 {
-    fn solve_part1(&self, input: &mut String) -> i32 {
+    fn solve_part1(&self, input: &mut String) -> i64 {
         let mut result = 0;
         let mut current_rotation: i16 = 50;
         for line in input.lines() {
@@ -21,7 +21,7 @@ impl super::Challenge for Day1 {
         result
     }
 
-    fn solve_part2(&self, input: &mut String) -> i32 {
+    fn solve_part2(&self, input: &mut String) -> i64 {
         let mut result = 0;
         let mut current_rotation: i16 = 50;
         for line in input.lines() {

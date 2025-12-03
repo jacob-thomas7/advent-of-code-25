@@ -1,6 +1,6 @@
 #[allow(unused)]
 use crate::{output, OutputLevel, Challenge};
-use std::collections::HashSet;
+use std::{collections::HashSet};
 
 pub struct Day2;
 
@@ -105,7 +105,11 @@ fn power_of_10(power: u8) -> u64 {
 }
 
 fn digits(num: u64) -> u8 {
-    num.to_string().len() as u8
+    if num == 0 { 
+        1
+    } else {
+        f64::log10(num as f64).floor() as u8 + 1
+    }
 }
 
 fn first_n_digits(num: u64, n: u64) -> u64 {
@@ -116,7 +120,6 @@ fn repeat(num: u64, n: u64) -> u64 {
     let mut result = 0;
     for i in 0..n {
         result += num * power_of_10(i as u8 * digits(num));
-        
     }
     result
 }

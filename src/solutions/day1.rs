@@ -40,26 +40,26 @@ impl Challenge for Day1 {
             }
 
             if (previous < 0 && current_rotation > 0) || (previous >= 0 && current_rotation < 0) {
-                println!("Add 0 from {previous} to {current_rotation}");
+                // println!("Add 0 from {previous} to {current_rotation}");
                 result += 1;
             } else {
-                println!("from {previous} to {current_rotation}")
+                // println!("from {previous} to {current_rotation}")
             }
 
             while current_rotation < -100 {
                 current_rotation += 100;
-                println!("There was a rotation");
+                // println!("There was a rotation");
                 result += 1;
             }
             
             while current_rotation > 100 {
                 current_rotation -= 100;
-                println!("There was a rotation");
+                // println!("There was a rotation");
                 result += 1;
             }
             
             if previous == 0 && current_rotation > 0 {
-                println!("There was a rotation");
+                // println!("There was a rotation");
                 result += 1;
             }
 

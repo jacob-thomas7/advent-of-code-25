@@ -1,9 +1,11 @@
+#[allow(unused)]
+use crate::{output, OutputLevel, Challenge};
 use std::collections::HashSet;
 
 pub struct Day2;
 
-impl super::Challenge for Day2 {
-    fn solve_part1(&self, input: &mut String) -> i64 {
+impl Challenge for Day2 {
+    fn solve_part1(&self, input: &String) -> Option<i64>  {
         let mut result: u64 = 0;
         let lines = input.split(",");
         for line in lines {
@@ -38,12 +40,12 @@ impl super::Challenge for Day2 {
             }
         }
 
-        result as i64
+        Some(result as i64)
     }
-    fn solve_part2(&self, input: &mut String) -> i64 {
+    fn solve_part2(&self, input: &String) -> Option<i64>  {
         let mut result: u64 = 0;
 
-        let mut lines = input.split(",").map(|line| {
+        let lines = input.split(",").map(|line| {
             let mut values = line.split("-");
             (
                 values.next().unwrap().parse::<u64>().unwrap(),
@@ -62,21 +64,22 @@ impl super::Challenge for Day2 {
             }
         }
 
-
         for (min, max) in values {
             assert_eq!(digits(min), digits(max));
             let num_digits: u8 = digits(min);
 
+            // Keep track of matches to avoid double-counting
             let mut invalids: HashSet<u64> = HashSet::new();
             for checker_length in 1..num_digits / 2 + 1 {
-                // println!("Checking {checker_length} for range {min}..{max}");
                 let mut segment = first_n_digits(min, checker_length as u64);
-                // println!("\tFirst checking {segment}");
+                
+                output(OutputLevel::Debug, format!("Checking {checker_length} for range {min}..{max}"));
+                output(OutputLevel::Debug, format!("\tFirst checking {segment}"));
+                
                 loop {
                     let potential_invalid = repeat(segment, num_digits as u64 / checker_length as u64);
                     if potential_invalid >= min && potential_invalid <= max {
-                        // println!("\tFound an invalid: {potential_invalid}");
-
+                        output(OutputLevel::Info, format!("\tFound an invalid: {potential_invalid}"));
                         invalids.insert(potential_invalid);
                     }
                     if potential_invalid >= max {
@@ -89,7 +92,7 @@ impl super::Challenge for Day2 {
         }
 
 
-        result as i64
+        Some(result as i64)
     }
 }
 

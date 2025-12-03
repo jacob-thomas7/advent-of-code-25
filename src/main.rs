@@ -2,29 +2,54 @@ use std::{fs::File, io::Read, process::exit};
 
 use advent_of_code_25::*;
 
+
 fn main() {
     let matches = crate::command_parser().get_matches();
 
     let day: u8 = matches.get_one::<String>("DAY").unwrap().parse().unwrap();
-    if day as usize > CHALLENGES.len()  || day <= 0{
+    if day as usize > CHALLENGES.len() || day <= 0{
         eprintln!("Day {day} isn't implemented!");
         exit(1);
     }
-    
+
+    let disable = match matches.get_many::<String>("disable") {
+        Some(values) => values.collect::<Vec<_>>(),
+        None => Vec::new()
+    };
+
     let challenge = &CHALLENGES[day as usize - 1];
 
-    let mut example1 = String::new();
-    let mut puzzle1 = String::new();
-    let mut example2 = String::new();
-    let mut puzzle2 = String::new();
+    let tests = [
+        Test::new("Example 1", "examples/day{}.txt", Box::new(|input| challenge.solve_part1(input))),
+        Test::new("Puzzle 1", "puzzles/day{}.txt", Box::new(|input| challenge.solve_part1(input))),
+        Test::new("Example 2", "examples/day{}.txt", Box::new(|input| challenge.solve_part2(input))),
+        Test::new("Puzzle 2", "puzzles/day{}.txt", Box::new(|input| challenge.solve_part2(input))),
+    ];
 
-    File::open(format!("challenge_files/examples1/day{day}.txt")).unwrap().read_to_string(&mut example1).unwrap();
-    File::open(format!("challenge_files/puzzles/day{day}.txt")).unwrap().read_to_string(&mut puzzle1).unwrap();
-    File::open(format!("challenge_files/examples1/day{day}.txt")).unwrap().read_to_string(&mut example2).unwrap();
-    File::open(format!("challenge_files/puzzles/day{day}.txt")).unwrap().read_to_string(&mut puzzle2).unwrap();
+    for test in tests {
+        if disable.contains(&&String::from(test.name)) {
+            println!("Skipping {}... (from command line args)", test.name);
+            continue;
+        }
 
-    println!("Example 1: {}", challenge.solve_part1(&mut example1));
-    println!("Part 1: {}", challenge.solve_part1(&mut puzzle1));
-    println!("Example 2: {}", challenge.solve_part2(&mut example2));
-    println!("Part 2: {}", challenge.solve_part2(&mut puzzle2));
+        let path = String::from("challenge_files/") + &test.file.replace("{}", &day.to_string());
+        let mut contents = String::new();
+        match File::open(&path) {
+            Ok(mut file) => {
+                match file.read_to_string(&mut contents) {
+                    Ok(_) => (),
+                    Err(error) => println!("Skipping {}... (error while reading file: \"{}\"", test.name, error)
+                }
+            },
+            Err(_) => {
+                println!("Skipping {}... (unable to find \"{}\")", test.name, path);
+                continue;
+            }
+        }
+
+        match (test.callback)(&contents) {
+            Some(result) => println!("{}: {}", test.name, result),
+            None => println!("{} isn't implemented yet!", test.name)
+        }
+    }
 }

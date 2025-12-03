@@ -1,7 +1,10 @@
+#[allow(unused)]
+use crate::{output, OutputLevel, Challenge};
+
 pub struct Day1;
 
-impl super::Challenge for Day1 {
-    fn solve_part1(&self, input: &mut String) -> i64 {
+impl Challenge for Day1 {
+    fn solve_part1(&self, input: &String) -> Option<i64> {
         let mut result = 0;
         let mut current_rotation: i16 = 50;
         for line in input.lines() {
@@ -18,10 +21,10 @@ impl super::Challenge for Day1 {
                 result += 1;
             }
         }
-        result
+        Some(result)
     }
 
-    fn solve_part2(&self, input: &mut String) -> i64 {
+    fn solve_part2(&self, input: &String) -> Option<i64> {
         let mut result = 0;
         let mut current_rotation: i16 = 50;
         for line in input.lines() {
@@ -69,6 +72,6 @@ impl super::Challenge for Day1 {
                 current_rotation = 0;
             }
         }
-        result
+        Some(result)
     }
 }

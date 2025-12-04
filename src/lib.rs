@@ -41,7 +41,7 @@ pub enum OutputLevel {
 }
 
 // Global variable for ouput level, safe because it is only set by main
-pub static mut OUTPUT_LEVEL: OutputLevel = OutputLevel::Warning;
+pub static mut OUTPUT_LEVEL: OutputLevel = OutputLevel::Debug;
 
 pub fn output(level: OutputLevel, output: String) {
     unsafe {
